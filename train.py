@@ -1,6 +1,8 @@
 import torch
 import torch.nn as nn
 
+from config import DEVICE
+
 
 def train(model, train_loader, num_epochs=10, lr=0.001):
     """
@@ -14,10 +16,12 @@ def train(model, train_loader, num_epochs=10, lr=0.001):
     for epoch in range(num_epochs):
         total_loss = 0
         for xb in train_loader:
-            xb = xb[0].cuda()  # TensorDataset은 튜플 반환
+            xb = xb[0].to(DEVICE)  # TensorDataset은 튜플 반환
             optimizer.zero_grad()
             recon, target = model(xb)
-            loss = loss_fn_recon(recon, xb) + loss_fn_target(target, torch.zeros_like(target))  # placeholder Y
+            # decoder의 reconstruction 출력만 MSE 계산, target은 상태 예측용이므로 무시 가능
+            recon_loss = loss_fn_recon(recon, xb)
+            loss = recon_loss  # 상태 예측 loss는 생략 또는 나중에 추가  # placeholder Y
             loss.backward()
             optimizer.step()
             total_loss += loss.item()

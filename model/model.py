@@ -20,7 +20,7 @@ class SemanticDecoder(nn.Module):
     """
     의미 벡터를 받아 시계열 복원 + 상태 지표 예측을 수행하는 디코더
     """
-    def __init__(self, latent_dim=32, hidden_dim=64, seq_len=50, output_dim=4):
+    def __init__(self, latent_dim=32, hidden_dim=64, seq_len=30, output_dim=4):
         super().__init__()
         self.fc = nn.Linear(latent_dim, hidden_dim)
         self.lstm = nn.LSTM(hidden_dim, hidden_dim, batch_first=True)

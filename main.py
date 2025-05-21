@@ -14,7 +14,7 @@ def main():
     parser.add_argument("--data-path", default="data/00002.csv", type=str)
     parser.add_argument("--window-size", default=30, type=int)
     parser.add_argument('--batch-size', default=128, type=int)
-    parser.add_argument("--epochs", default=30, type=int)
+    parser.add_argument("--epochs", default=50, type=int)
     parser.add_argument("--lr", default=0.001, type=float)
     args = parser.parse_args()
 
@@ -22,7 +22,8 @@ def main():
     dataset = TensorDataset(torch.tensor(X))
     train_loader = DataLoader(dataset, batch_size=args.batch_size, shuffle=True)
 
-    model = DeepSCBattery().cuda()
+    device = torch.device("cpu")
+    model = DeepSCBattery().to(device)
     train(model, train_loader, num_epochs=args.epochs, lr=args.lr)
     evaluate(model, X, scaler)
 

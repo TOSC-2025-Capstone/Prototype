@@ -2,6 +2,7 @@ import numpy as np
 import torch
 from sklearn.metrics import mean_squared_error
 
+from config import DEVICE
 from utils import visualize_reconstruction
 
 
@@ -11,7 +12,7 @@ def evaluate(model, X_test, feature_scaler):
     """
     model.eval()
     with torch.no_grad():
-        X_tensor = torch.tensor(X_test).cuda()
+        X_tensor = torch.tensor(X_test).to(DEVICE)
         recon, target = model(X_tensor)
         recon = recon.cpu().numpy()
 
